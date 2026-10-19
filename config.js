@@ -6,5 +6,5 @@ window.CONFIG = {
   TMDB_API_KEY: '4ce356e1f9a195b55f1383ccf8ac6f8d',
 
   // Names shown on the "already seen by" chips
-  PEOPLE: ['Me', 'Her'],
+  PEOPLE: ['He', 'She'],
 };
