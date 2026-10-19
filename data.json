@@ -24,7 +24,8 @@
   "status": "queue",
   "position": 2,
   "seen_by": [
-   "Me"
+   "Me",
+   "He"
   ]
  }
 ]
