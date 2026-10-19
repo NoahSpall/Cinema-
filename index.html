@@ -1,352 +1,841 @@
 <!doctype html>
 <html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#0b0b10">
-<title>Cinema Queue</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍿</text></svg>">
-<style>
-  :root {
-    --bg: #0b0b10; --panel: #15151d; --panel2: #1d1d28; --line: #272735;
-    --text: #f2f2f7; --muted: #8b8ba0; --accent: #ff5a5f; --accent2: #ffb454; --ok: #4ade80;
-  }
-  * { box-sizing: border-box; margin: 0; }
-  body {
-    background: radial-gradient(1200px 600px at 80% -10%, #2a1620 0%, transparent 60%), var(--bg);
-    color: var(--text); font: 15px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif;
-    min-height: 100vh; padding: 0 16px 80px;
-  }
-  .wrap { max-width: 760px; margin: 0 auto; }
-  header { display: flex; align-items: center; justify-content: space-between; padding: 22px 0 14px; }
-  h1 { font-size: 22px; letter-spacing: .5px; }
-  h1 span { color: var(--accent); }
-  button { font: inherit; color: inherit; cursor: pointer; border: 0; background: none; }
-  .link { color: var(--muted); font-size: 13px; }
-  .link:hover { color: var(--text); }
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#0b0b10" />
+    <title>Cinema!</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍿</text></svg>"
+    />
+    <style>
+      :root {
+        --bg: #0b0b10;
+        --panel: #15151d;
+        --panel2: #1d1d28;
+        --line: #272735;
+        --text: #f2f2f7;
+        --muted: #8b8ba0;
+        --accent: #ff5a5f;
+        --accent2: #ffb454;
+        --ok: #4ade80;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+      }
+      body {
+        background:
+          radial-gradient(1200px 600px at 80% -10%, #2a1620 0%, transparent 60%), var(--bg);
+        color: var(--text);
+        font:
+          15px/1.45 system-ui,
+          -apple-system,
+          'Segoe UI',
+          sans-serif;
+        min-height: 100vh;
+        padding: 0 16px 80px;
+      }
+      .wrap {
+        max-width: 760px;
+        margin: 0 auto;
+      }
+      header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 22px 0 14px;
+      }
+      h1 {
+        font-size: 22px;
+        letter-spacing: 0.5px;
+      }
+      h1 span {
+        color: var(--accent);
+      }
+      button {
+        font: inherit;
+        color: inherit;
+        cursor: pointer;
+        border: 0;
+        background: none;
+      }
+      .link {
+        color: var(--muted);
+        font-size: 13px;
+      }
+      .link:hover {
+        color: var(--text);
+      }
 
-  /* search */
-  .search { position: sticky; top: 0; z-index: 20; padding: 8px 0 12px; background: linear-gradient(var(--bg) 70%, transparent); }
-  .search input {
-    width: 100%; padding: 14px 16px; border-radius: 14px; border: 1px solid var(--line);
-    background: var(--panel); color: var(--text); font-size: 16px; outline: none; transition: border-color .15s, box-shadow .15s;
-  }
-  .search input:focus { border-color: var(--accent); box-shadow: 0 0 0 4px #ff5a5f22; }
-  .results {
-    position: absolute; left: 0; right: 0; top: calc(100% - 4px); max-height: 70vh; overflow: auto;
-    background: var(--panel); border: 1px solid var(--line); border-radius: 14px; box-shadow: 0 20px 50px #000a; display: none;
-  }
-  .results.open { display: block; }
-  .res { display: flex; gap: 12px; padding: 10px; width: 100%; text-align: left; border-bottom: 1px solid var(--line); }
-  .res:last-child { border: 0; }
-  .res:hover { background: var(--panel2); }
-  .res img, .ph { width: 52px; height: 78px; border-radius: 6px; object-fit: cover; flex: none; background: var(--panel2); }
-  .res .t { font-weight: 600; }
-  .res .m { color: var(--muted); font-size: 12px; margin-bottom: 2px; }
-  .res .o, .ov { color: var(--muted); font-size: 13px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-  .res .added { color: var(--ok); font-size: 12px; }
-  .empty-res { padding: 16px; color: var(--muted); }
+      /* search */
+      .search {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        padding: 8px 0 12px;
+        background: linear-gradient(var(--bg) 70%, transparent);
+      }
+      .search input {
+        width: 100%;
+        padding: 14px 16px;
+        border-radius: 14px;
+        border: 1px solid var(--line);
+        background: var(--panel);
+        color: var(--text);
+        font-size: 16px;
+        outline: none;
+        transition:
+          border-color 0.15s,
+          box-shadow 0.15s;
+      }
+      .search input:focus {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 4px #ff5a5f22;
+      }
+      .results {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: calc(100% - 4px);
+        max-height: 70vh;
+        overflow: auto;
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        box-shadow: 0 20px 50px #000a;
+        display: none;
+      }
+      .results.open {
+        display: block;
+      }
+      .res {
+        display: flex;
+        gap: 12px;
+        padding: 10px;
+        width: 100%;
+        text-align: left;
+        border-bottom: 1px solid var(--line);
+      }
+      .res:last-child {
+        border: 0;
+      }
+      .res:hover {
+        background: var(--panel2);
+      }
+      .res img,
+      .ph {
+        width: 52px;
+        height: 78px;
+        border-radius: 6px;
+        object-fit: cover;
+        flex: none;
+        background: var(--panel2);
+      }
+      .res .t {
+        font-weight: 600;
+      }
+      .res .m {
+        color: var(--muted);
+        font-size: 12px;
+        margin-bottom: 2px;
+      }
+      .res .o,
+      .ov {
+        color: var(--muted);
+        font-size: 13px;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+      .res .added {
+        color: var(--ok);
+        font-size: 12px;
+      }
+      .empty-res {
+        padding: 16px;
+        color: var(--muted);
+      }
 
-  /* sections */
-  h2 { font-size: 12px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); margin: 26px 0 10px; display: flex; align-items: center; gap: 8px; }
-  h2 .count { background: var(--panel2); border-radius: 99px; padding: 1px 8px; font-size: 11px; }
-  .list { display: grid; gap: 10px; }
-  .hint { color: var(--muted); font-size: 13px; padding: 18px; border: 1px dashed var(--line); border-radius: 14px; text-align: center; }
+      /* sections */
+      h2 {
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        color: var(--muted);
+        margin: 26px 0 10px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      h2 .count {
+        background: var(--panel2);
+        border-radius: 99px;
+        padding: 1px 8px;
+        font-size: 11px;
+      }
+      .list {
+        display: grid;
+        gap: 10px;
+      }
+      .hint {
+        color: var(--muted);
+        font-size: 13px;
+        padding: 18px;
+        border: 1px dashed var(--line);
+        border-radius: 14px;
+        text-align: center;
+      }
 
-  .card {
-    display: flex; gap: 14px; padding: 10px; background: var(--panel); border: 1px solid var(--line);
-    border-radius: 14px; align-items: stretch; transition: transform .15s, border-color .15s, background .15s; position: relative;
-  }
-  .card:hover { border-color: #3a3a50; }
-  .card img, .card .ph { width: 70px; height: 105px; border-radius: 8px; object-fit: cover; flex: none; }
-  .body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
-  .title { font-weight: 650; font-size: 16px; padding-right: 26px; }
-  .meta { color: var(--muted); font-size: 12px; display: flex; gap: 8px; align-items: center; }
-  .badge { background: var(--panel2); border-radius: 6px; padding: 1px 7px; font-size: 11px; text-transform: uppercase; letter-spacing: .5px; }
-  .badge.tv { color: var(--accent2); } .badge.movie { color: #7dd3fc; }
-  .row { display: flex; gap: 6px; flex-wrap: wrap; margin-top: auto; align-items: center; }
-  .chip { border: 1px solid var(--line); border-radius: 99px; padding: 2px 10px; font-size: 12px; color: var(--muted); transition: all .15s; }
-  .chip.on { background: #4ade8022; border-color: #4ade8066; color: var(--ok); }
-  .act { background: var(--panel2); border-radius: 8px; padding: 4px 10px; font-size: 13px; }
-  .act:hover { background: #2a2a3a; }
-  .act.primary { background: var(--accent); color: #fff; font-weight: 600; }
-  .act.primary:hover { filter: brightness(1.1); }
-  .x { position: absolute; top: 6px; right: 8px; color: var(--muted); font-size: 18px; line-height: 1; padding: 4px; }
-  .x:hover { color: var(--accent); }
+      .card {
+        display: flex;
+        gap: 14px;
+        padding: 10px;
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        align-items: stretch;
+        transition:
+          transform 0.15s,
+          border-color 0.15s,
+          background 0.15s;
+        position: relative;
+      }
+      .card:hover {
+        border-color: #3a3a50;
+      }
+      .card img,
+      .card .ph {
+        width: 70px;
+        height: 105px;
+        border-radius: 8px;
+        object-fit: cover;
+        flex: none;
+      }
+      .body {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+      .title {
+        font-weight: 650;
+        font-size: 16px;
+        padding-right: 26px;
+      }
+      .meta {
+        color: var(--muted);
+        font-size: 12px;
+        display: flex;
+        gap: 8px;
+        align-items: center;
+      }
+      .badge {
+        background: var(--panel2);
+        border-radius: 6px;
+        padding: 1px 7px;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      .badge.tv {
+        color: var(--accent2);
+      }
+      .badge.movie {
+        color: #7dd3fc;
+      }
+      .row {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+        margin-top: auto;
+        align-items: center;
+      }
+      .chip {
+        border: 1px solid var(--line);
+        border-radius: 99px;
+        padding: 2px 10px;
+        font-size: 12px;
+        color: var(--muted);
+        transition: all 0.15s;
+      }
+      .chip.on {
+        background: #4ade8022;
+        border-color: #4ade8066;
+        color: var(--ok);
+      }
+      .act {
+        background: var(--panel2);
+        border-radius: 8px;
+        padding: 4px 10px;
+        font-size: 13px;
+      }
+      .act:hover {
+        background: #2a2a3a;
+      }
+      .act.primary {
+        background: var(--accent);
+        color: #fff;
+        font-weight: 600;
+      }
+      .act.primary:hover {
+        filter: brightness(1.1);
+      }
+      .x {
+        position: absolute;
+        top: 6px;
+        right: 8px;
+        color: var(--muted);
+        font-size: 18px;
+        line-height: 1;
+        padding: 4px;
+      }
+      .x:hover {
+        color: var(--accent);
+      }
 
-  /* queue ranking */
-  .rank { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 28px; flex: none; color: var(--muted); }
-  .rank b { font-size: 18px; color: var(--text); font-variant-numeric: tabular-nums; }
-  .grip { cursor: grab; user-select: none; touch-action: none; font-size: 16px; letter-spacing: -2px; margin-top: 4px; }
-  .grip:active { cursor: grabbing; }
-  .sortable-ghost { opacity: .3; }
-  .sortable-chosen { border-color: var(--accent); box-shadow: 0 10px 30px #000a; }
+      /* queue ranking */
+      .rank {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 28px;
+        flex: none;
+        color: var(--muted);
+      }
+      .rank b {
+        font-size: 18px;
+        color: var(--text);
+        font-variant-numeric: tabular-nums;
+      }
+      .grip {
+        cursor: grab;
+        user-select: none;
+        touch-action: none;
+        font-size: 16px;
+        letter-spacing: -2px;
+        margin-top: 4px;
+      }
+      .grip:active {
+        cursor: grabbing;
+      }
+      .sortable-ghost {
+        opacity: 0.3;
+      }
+      .sortable-chosen {
+        border-color: var(--accent);
+        box-shadow: 0 10px 30px #000a;
+      }
 
-  .watching .card { background: linear-gradient(120deg, #3a1a22, var(--panel) 60%); border-color: #ff5a5f55; }
-  .live { color: var(--accent); font-size: 11px; font-weight: 700; letter-spacing: 1px; animation: pulse 1.6s infinite; }
-  @keyframes pulse { 50% { opacity: .4; } }
-  .done .card { opacity: .75; } .done .card img { filter: grayscale(.4); }
-  details > summary { list-style: none; cursor: pointer; } details > summary::-webkit-details-marker { display: none; }
+      .watching .card {
+        background: linear-gradient(120deg, #3a1a22, var(--panel) 60%);
+        border-color: #ff5a5f55;
+      }
+      .live {
+        color: var(--accent);
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        animation: pulse 1.6s infinite;
+      }
+      @keyframes pulse {
+        50% {
+          opacity: 0.4;
+        }
+      }
+      .done .card {
+        opacity: 0.75;
+      }
+      .done .card img {
+        filter: grayscale(0.4);
+      }
+      details > summary {
+        list-style: none;
+        cursor: pointer;
+      }
+      details > summary::-webkit-details-marker {
+        display: none;
+      }
 
-  /* login */
-  .login { max-width: 340px; margin: 18vh auto 0; display: grid; gap: 10px; text-align: center; }
-  .login h1 { font-size: 34px; margin-bottom: 8px; }
-  .login input { padding: 13px 14px; border-radius: 12px; border: 1px solid var(--line); background: var(--panel); color: var(--text); font-size: 16px; outline: none; }
-  .login input:focus { border-color: var(--accent); }
-  .login .act { padding: 12px; font-size: 15px; }
-  .err { color: var(--accent); font-size: 13px; min-height: 18px; }
-  .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--panel2); border: 1px solid var(--line); padding: 10px 16px; border-radius: 10px; font-size: 14px; opacity: 0; pointer-events: none; transition: opacity .2s; z-index: 50; }
-  .toast.show { opacity: 1; }
-  [hidden] { display: none !important; }
-</style>
-</head>
-<body>
-<div class="wrap">
+      /* login */
+      .login {
+        max-width: 340px;
+        margin: 18vh auto 0;
+        display: grid;
+        gap: 10px;
+        text-align: center;
+      }
+      .login h1 {
+        font-size: 34px;
+        margin-bottom: 8px;
+      }
+      .login input {
+        padding: 13px 14px;
+        border-radius: 12px;
+        border: 1px solid var(--line);
+        background: var(--panel);
+        color: var(--text);
+        font-size: 16px;
+        outline: none;
+      }
+      .login input:focus {
+        border-color: var(--accent);
+      }
+      .login .act {
+        padding: 12px;
+        font-size: 15px;
+      }
+      .err {
+        color: var(--accent);
+        font-size: 13px;
+        min-height: 18px;
+      }
+      .toast {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: var(--panel2);
+        border: 1px solid var(--line);
+        padding: 10px 16px;
+        border-radius: 10px;
+        font-size: 14px;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.2s;
+        z-index: 50;
+      }
+      .toast.show {
+        opacity: 1;
+      }
+      [hidden] {
+        display: none !important;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <!-- Connect -->
+      <form id="login" class="login" hidden>
+        <h1>🍿 Cinema<span>!</span></h1>
+        <p class="link">
+          Paste your GitHub access token to connect this device. It stays in this browser only.
+        </p>
+        <input id="token" type="password" placeholder="github_pat_…" autocomplete="off" required />
+        <div class="err" id="loginErr"></div>
+        <button class="act primary" type="submit">Connect</button>
+      </form>
 
-  <!-- Connect -->
-  <form id="login" class="login" hidden>
-    <h1>🍿 Cinema<span>Queue</span></h1>
-    <p class="link">Paste your GitHub access token to connect this device. It stays in this browser only.</p>
-    <input id="token" type="password" placeholder="github_pat_…" autocomplete="off" required>
-    <div class="err" id="loginErr"></div>
-    <button class="act primary" type="submit">Connect</button>
-  </form>
+      <!-- App -->
+      <div id="app" hidden>
+        <header>
+          <h1>🍿 Cinema<span>!</span></h1>
+          <button class="link" id="logout">Disconnect</button>
+        </header>
 
-  <!-- App -->
-  <div id="app" hidden>
-    <header>
-      <h1>🍿 Cinema<span>Queue</span></h1>
-      <button class="link" id="logout">Disconnect</button>
-    </header>
+        <div class="search">
+          <input
+            id="q"
+            type="search"
+            placeholder="Search a movie or series to add…"
+            autocomplete="off"
+          />
+          <div class="results" id="results"></div>
+        </div>
 
-    <div class="search">
-      <input id="q" type="search" placeholder="Search a movie or series to add…" autocomplete="off">
-      <div class="results" id="results"></div>
+        <h2>Watching now <span class="count" id="nWatching">0</span></h2>
+        <div class="list watching" id="watching"></div>
+
+        <h2>Up next · drag to rank <span class="count" id="nQueue">0</span></h2>
+        <div class="list" id="queue"></div>
+
+        <details class="done" id="doneBox">
+          <summary>
+            <h2>Watched together ▾ <span class="count" id="nDone">0</span></h2>
+          </summary>
+          <div class="list" id="done"></div>
+        </details>
+      </div>
     </div>
+    <div class="toast" id="toast"></div>
 
-    <h2>Watching now <span class="count" id="nWatching">0</span></h2>
-    <div class="list watching" id="watching"></div>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
+    <script src="config.js"></script>
+    <script>
+      const C = window.CONFIG;
+      const $ = (id) => document.getElementById(id);
+      const esc = (s) =>
+        String(s ?? '').replace(
+          /[&<>"']/g,
+          (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]
+        );
+      const toast = (msg) => {
+        const t = $('toast');
+        t.textContent = msg;
+        t.classList.add('show');
+        clearTimeout(toast.t);
+        toast.t = setTimeout(() => t.classList.remove('show'), 2200);
+      };
 
-    <h2>Up next · drag to rank <span class="count" id="nQueue">0</span></h2>
-    <div class="list" id="queue"></div>
+      if (!C.DATA_REPO || !C.TMDB_API_KEY) {
+        document.body.innerHTML =
+          '<p style="padding:40px;font-family:sans-serif">Fill in <code>config.js</code> first (see README.md).</p>';
+        throw new Error('Missing config');
+      }
 
-    <details class="done" id="doneBox">
-      <summary><h2>Watched together ▾ <span class="count" id="nDone">0</span></h2></summary>
-      <div class="list" id="done"></div>
-    </details>
-  </div>
-</div>
-<div class="toast" id="toast"></div>
+      /* ---------- GitHub storage ---------- */
+      const FILE = C.DATA_FILE || 'data.json';
+      const API = `https://api.github.com/repos/${C.DATA_REPO}/contents/${FILE}`;
+      const getToken = () => {
+        try {
+          return localStorage.getItem('gh_token');
+        } catch {
+          return null;
+        }
+      };
+      const hdr = () => ({
+        Authorization: `Bearer ${getToken()}`,
+        Accept: 'application/vnd.github+json',
+      });
+      const enc = (obj) => {
+        const b = new TextEncoder().encode(JSON.stringify(obj, null, 1));
+        let s = '';
+        b.forEach((c) => (s += String.fromCharCode(c)));
+        return btoa(s);
+      };
+      const dec = (b64) =>
+        JSON.parse(
+          new TextDecoder().decode(
+            Uint8Array.from(atob(b64.replace(/\n/g, '')), (c) => c.charCodeAt(0))
+          )
+        );
 
-<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
-<script src="config.js"></script>
-<script>
-const C = window.CONFIG;
-const $ = (id) => document.getElementById(id);
-const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-const toast = (msg) => { const t = $("toast"); t.textContent = msg; t.classList.add("show"); clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove("show"), 2200); };
+      let base = [],
+        sha = null,
+        pending = [],
+        items = [],
+        saving = false;
 
-if (!C.DATA_REPO || !C.TMDB_API_KEY) {
-  document.body.innerHTML = '<p style="padding:40px;font-family:sans-serif">Fill in <code>config.js</code> first (see README.md).</p>';
-  throw new Error("Missing config");
-}
+      const applyOps = (list, ops) => {
+        let out = list.map((i) => ({ ...i }));
+        for (const op of ops) {
+          if (op.t === 'add') {
+            if (
+              !out.some(
+                (i) =>
+                  i.id === op.item.id ||
+                  (i.tmdb_id === op.item.tmdb_id && i.media_type === op.item.media_type)
+              )
+            )
+              out.push({ ...op.item });
+          } else if (op.t === 'patch') {
+            const i = out.find((x) => x.id === op.id);
+            if (i) Object.assign(i, op.fields);
+          } else if (op.t === 'del') out = out.filter((i) => i.id !== op.id);
+        }
+        return out;
+      };
+      const recompute = () => {
+        items = applyOps(base, pending);
+        render();
+      };
 
-/* ---------- GitHub storage ---------- */
-const FILE = C.DATA_FILE || "data.json";
-const API = `https://api.github.com/repos/${C.DATA_REPO}/contents/${FILE}`;
-const getToken = () => { try { return localStorage.getItem("gh_token"); } catch { return null; } };
-const hdr = () => ({ Authorization: `Bearer ${getToken()}`, Accept: "application/vnd.github+json" });
-const enc = (obj) => { const b = new TextEncoder().encode(JSON.stringify(obj, null, 1)); let s = ""; b.forEach((c) => (s += String.fromCharCode(c))); return btoa(s); };
-const dec = (b64) => JSON.parse(new TextDecoder().decode(Uint8Array.from(atob(b64.replace(/\n/g, "")), (c) => c.charCodeAt(0))));
-
-let base = [], sha = null, pending = [], items = [], saving = false;
-
-const applyOps = (list, ops) => {
-  let out = list.map((i) => ({ ...i }));
-  for (const op of ops) {
-    if (op.t === "add") { if (!out.some((i) => i.id === op.item.id || (i.tmdb_id === op.item.tmdb_id && i.media_type === op.item.media_type))) out.push({ ...op.item }); }
-    else if (op.t === "patch") { const i = out.find((x) => x.id === op.id); if (i) Object.assign(i, op.fields); }
-    else if (op.t === "del") out = out.filter((i) => i.id !== op.id);
-  }
-  return out;
-};
-const recompute = () => { items = applyOps(base, pending); render(); };
-
-async function fetchRemote() {
-  const res = await fetch(API, { headers: hdr(), cache: "no-store" });
-  if (res.status === 401) { disconnect("Token rejected — paste a new one."); throw new Error("auth"); }
-  if (res.status === 404) { base = []; sha = null; return; } // file not created yet
-  if (!res.ok) throw new Error(`GitHub error ${res.status}`);
-  const j = await res.json();
-  base = dec(j.content); sha = j.sha;
-}
-
-async function save() {
-  if (saving || !pending.length) return;
-  saving = true;
-  try {
-    while (pending.length) {
-      const ops = pending.slice();
-      const body = { message: "Update list", content: enc(applyOps(base, ops)) };
-      if (sha) body.sha = sha;
-      const res = await fetch(API, { method: "PUT", headers: { ...hdr(), "Content-Type": "application/json" }, body: JSON.stringify(body) });
-      if (res.ok) {
+      async function fetchRemote() {
+        const res = await fetch(API, { headers: hdr(), cache: 'no-store' });
+        if (res.status === 401) {
+          disconnect('Token rejected — paste a new one.');
+          throw new Error('auth');
+        }
+        if (res.status === 404) {
+          base = [];
+          sha = null;
+          return;
+        } // file not created yet
+        if (!res.ok) throw new Error(`GitHub error ${res.status}`);
         const j = await res.json();
-        base = applyOps(base, ops); sha = j.content.sha; pending = pending.slice(ops.length);
-      } else if (res.status === 409 || res.status === 422) {
-        await fetchRemote(); // someone else saved first: re-apply our changes on top
-      } else if (res.status === 401 || res.status === 403 || res.status === 404) {
-        toast("Can't save — check the token has access to the data repo"); break;
-      } else throw new Error(`GitHub error ${res.status}`);
-      recompute();
-    }
-  } catch (e) { if (e.message !== "auth") toast("Save failed: " + e.message); }
-  saving = false;
-  if (pending.length) setTimeout(save, 5000);
-}
-let saveTimer;
-function mutate(op) { pending.push(op); recompute(); clearTimeout(saveTimer); saveTimer = setTimeout(save, 400); }
-const patch = (id, fields) => mutate({ t: "patch", id, fields });
+        base = dec(j.content);
+        sha = j.sha;
+      }
 
-async function poll() {
-  if (saving || pending.length || $("app").hidden) return;
-  try {
-    const res = await fetch(API, { headers: hdr(), cache: "no-store" });
-    if (!res.ok) return;
-    const j = await res.json();
-    if (j.sha !== sha) { base = dec(j.content); sha = j.sha; recompute(); }
-  } catch {}
-}
-setInterval(poll, 20000);
-document.addEventListener("visibilitychange", () => !document.hidden && poll());
+      async function save() {
+        if (saving || !pending.length) return;
+        saving = true;
+        try {
+          while (pending.length) {
+            const ops = pending.slice();
+            const body = { message: 'Update list', content: enc(applyOps(base, ops)) };
+            if (sha) body.sha = sha;
+            const res = await fetch(API, {
+              method: 'PUT',
+              headers: { ...hdr(), 'Content-Type': 'application/json' },
+              body: JSON.stringify(body),
+            });
+            if (res.ok) {
+              const j = await res.json();
+              base = applyOps(base, ops);
+              sha = j.content.sha;
+              pending = pending.slice(ops.length);
+            } else if (res.status === 409 || res.status === 422) {
+              await fetchRemote(); // someone else saved first: re-apply our changes on top
+            } else if (res.status === 401 || res.status === 403 || res.status === 404) {
+              toast("Can't save — check the token has access to the data repo");
+              break;
+            } else throw new Error(`GitHub error ${res.status}`);
+            recompute();
+          }
+        } catch (e) {
+          if (e.message !== 'auth') toast('Save failed: ' + e.message);
+        }
+        saving = false;
+        if (pending.length) setTimeout(save, 5000);
+      }
+      let saveTimer;
+      function mutate(op) {
+        pending.push(op);
+        recompute();
+        clearTimeout(saveTimer);
+        saveTimer = setTimeout(save, 400);
+      }
+      const patch = (id, fields) => mutate({ t: 'patch', id, fields });
 
-/* ---------- connect ---------- */
-function showApp(on) { $("login").hidden = on; $("app").hidden = !on; }
-function disconnect(msg) { try { localStorage.removeItem("gh_token"); } catch {} showApp(false); $("loginErr").textContent = msg || ""; }
-$("login").addEventListener("submit", async (e) => {
-  e.preventDefault();
-  try { localStorage.setItem("gh_token", $("token").value.trim()); } catch {}
-  $("loginErr").textContent = "";
-  await start();
-});
-$("logout").onclick = () => disconnect();
+      async function poll() {
+        if (saving || pending.length || $('app').hidden) return;
+        try {
+          const res = await fetch(API, { headers: hdr(), cache: 'no-store' });
+          if (!res.ok) return;
+          const j = await res.json();
+          if (j.sha !== sha) {
+            base = dec(j.content);
+            sha = j.sha;
+            recompute();
+          }
+        } catch {}
+      }
+      setInterval(poll, 20000);
+      document.addEventListener('visibilitychange', () => !document.hidden && poll());
 
-async function start() {
-  if (!getToken()) return showApp(false);
-  try { await fetchRemote(); } catch (e) { if (e.message !== "auth") { showApp(false); $("loginErr").textContent = e.message + " — check DATA_REPO and token access."; } return; }
-  showApp(true); recompute();
-}
+      /* ---------- connect ---------- */
+      function showApp(on) {
+        $('login').hidden = on;
+        $('app').hidden = !on;
+      }
+      function disconnect(msg) {
+        try {
+          localStorage.removeItem('gh_token');
+        } catch {}
+        showApp(false);
+        $('loginErr').textContent = msg || '';
+      }
+      $('login').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        try {
+          localStorage.setItem('gh_token', $('token').value.trim());
+        } catch {}
+        $('loginErr').textContent = '';
+        await start();
+      });
+      $('logout').onclick = () => disconnect();
 
-/* ---------- render ---------- */
-const byPos = (a, b) => a.position - b.position;
-const poster = (i) => i.poster ? `<img src="https://image.tmdb.org/t/p/w185${i.poster}" alt="" loading="lazy">` : `<div class="ph"></div>`;
+      async function start() {
+        if (!getToken()) return showApp(false);
+        try {
+          await fetchRemote();
+        } catch (e) {
+          if (e.message !== 'auth') {
+            showApp(false);
+            $('loginErr').textContent = e.message + ' — check DATA_REPO and token access.';
+          }
+          return;
+        }
+        showApp(true);
+        recompute();
+      }
 
-function card(i, kind, n) {
-  const seen = C.PEOPLE.map((p) => `<button class="chip ${i.seen_by.includes(p) ? "on" : ""}" data-a="seen" data-p="${esc(p)}">${i.seen_by.includes(p) ? "✓ " : ""}${esc(p)} saw it</button>`).join("");
-  const actions = {
-    queue: `<button class="act primary" data-a="start">▶ Start</button>`,
-    watching: `<button class="act primary" data-a="finish">✓ Finished</button><button class="act" data-a="back">Back to queue</button>`,
-    watched: `<button class="act" data-a="back">Watch again</button>`,
-  }[kind];
-  return `<div class="card" data-id="${i.id}">
-    ${kind === "queue" ? `<div class="rank"><b>${n}</b><span class="grip" title="Drag">⋮⋮</span></div>` : ""}
+      /* ---------- render ---------- */
+      const byPos = (a, b) => a.position - b.position;
+      const poster = (i) =>
+        i.poster
+          ? `<img src="https://image.tmdb.org/t/p/w185${i.poster}" alt="" loading="lazy">`
+          : `<div class="ph"></div>`;
+
+      function card(i, kind, n) {
+        const seen = C.PEOPLE.map(
+          (p) =>
+            `<button class="chip ${i.seen_by.includes(p) ? 'on' : ''}" data-a="seen" data-p="${esc(p)}">${i.seen_by.includes(p) ? '✓ ' : ''}${esc(p)} saw it</button>`
+        ).join('');
+        const actions = {
+          queue: `<button class="act primary" data-a="start">▶ Start</button>`,
+          watching: `<button class="act primary" data-a="finish">✓ Finished</button><button class="act" data-a="back">Back to queue</button>`,
+          watched: `<button class="act" data-a="back">Watch again</button>`,
+        }[kind];
+        return `<div class="card" data-id="${i.id}">
+    ${kind === 'queue' ? `<div class="rank"><b>${n}</b><span class="grip" title="Drag">⋮⋮</span></div>` : ''}
     ${poster(i)}
     <div class="body">
       <div class="title">${esc(i.title)}</div>
-      <div class="meta"><span class="badge ${i.media_type}">${i.media_type === "tv" ? "Series" : "Movie"}</span>${esc(i.year)}${kind === "watching" ? '<span class="live">● NOW</span>' : ""}</div>
+      <div class="meta"><span class="badge ${i.media_type}">${i.media_type === 'tv' ? 'Series' : 'Movie'}</span>${esc(i.year)}${kind === 'watching' ? '<span class="live">● NOW</span>' : ''}</div>
       <div class="ov">${esc(i.overview)}</div>
-      <div class="row">${actions}${kind !== "watched" ? seen : ""}</div>
+      <div class="row">${actions}${kind !== 'watched' ? seen : ''}</div>
     </div>
     <button class="x" data-a="del" title="Remove">×</button>
   </div>`;
-}
-function render() {
-  const w = items.filter((i) => i.status === "watching").sort(byPos);
-  const q = items.filter((i) => i.status === "queue").sort(byPos);
-  const d = items.filter((i) => i.status === "watched").sort((a, b) => b.position - a.position);
-  $("watching").innerHTML = w.map((i) => card(i, "watching")).join("") || `<div class="hint">Nothing on right now. Hit ▶ Start on something below.</div>`;
-  $("queue").innerHTML = q.map((i, k) => card(i, "queue", k + 1)).join("") || `<div class="hint">Your queue is empty — search above to add something 🎬</div>`;
-  $("done").innerHTML = d.map((i) => card(i, "watched")).join("");
-  $("nWatching").textContent = w.length; $("nQueue").textContent = q.length; $("nDone").textContent = d.length;
-}
-
-/* ---------- actions ---------- */
-document.addEventListener("click", (e) => {
-  const b = e.target.closest("[data-a]"); if (!b) return;
-  const el = b.closest(".card"); const i = items.find((x) => x.id === el?.dataset.id); if (!i) return;
-  const maxQ = Math.max(0, ...items.filter((x) => x.status === "queue").map((x) => x.position));
-  switch (b.dataset.a) {
-    case "start": patch(i.id, { status: "watching" }); break;
-    case "finish": patch(i.id, { status: "watched", position: Date.now() }); break;
-    case "back": patch(i.id, { status: "queue", position: maxQ + 1 }); break;
-    case "seen": { const p = b.dataset.p; patch(i.id, { seen_by: i.seen_by.includes(p) ? i.seen_by.filter((x) => x !== p) : [...i.seen_by, p] }); break; }
-    case "del":
-      if (confirm(`Remove "${i.title}"?`)) {
-        mutate({ t: "del", id: i.id });
       }
-  }
-});
+      function render() {
+        const w = items.filter((i) => i.status === 'watching').sort(byPos);
+        const q = items.filter((i) => i.status === 'queue').sort(byPos);
+        const d = items
+          .filter((i) => i.status === 'watched')
+          .sort((a, b) => b.position - a.position);
+        $('watching').innerHTML =
+          w.map((i) => card(i, 'watching')).join('') ||
+          `<div class="hint">Nothing on right now. Hit ▶ Start on something below.</div>`;
+        $('queue').innerHTML =
+          q.map((i, k) => card(i, 'queue', k + 1)).join('') ||
+          `<div class="hint">Your queue is empty — search above to add something 🎬</div>`;
+        $('done').innerHTML = d.map((i) => card(i, 'watched')).join('');
+        $('nWatching').textContent = w.length;
+        $('nQueue').textContent = q.length;
+        $('nDone').textContent = d.length;
+      }
 
-/* ---------- drag to rank ---------- */
-new Sortable($("queue"), {
-  handle: ".grip", animation: 180, ghostClass: "sortable-ghost", chosenClass: "sortable-chosen", forceFallback: false,
-  onEnd(evt) {
-    if (evt.oldIndex === evt.newIndex) return;
-    const q = items.filter((i) => i.status === "queue").sort(byPos);
-    const [moved] = q.splice(evt.oldIndex, 1);
-    const prev = q[evt.newIndex - 1], next = q[evt.newIndex];
-    const pos = prev && next ? (prev.position + next.position) / 2 : prev ? prev.position + 1 : next ? next.position - 1 : 0;
-    patch(moved.id, { position: pos });
-  },
-});
+      /* ---------- actions ---------- */
+      document.addEventListener('click', (e) => {
+        const b = e.target.closest('[data-a]');
+        if (!b) return;
+        const el = b.closest('.card');
+        const i = items.find((x) => x.id === el?.dataset.id);
+        if (!i) return;
+        const maxQ = Math.max(
+          0,
+          ...items.filter((x) => x.status === 'queue').map((x) => x.position)
+        );
+        switch (b.dataset.a) {
+          case 'start':
+            patch(i.id, { status: 'watching' });
+            break;
+          case 'finish':
+            patch(i.id, { status: 'watched', position: Date.now() });
+            break;
+          case 'back':
+            patch(i.id, { status: 'queue', position: maxQ + 1 });
+            break;
+          case 'seen': {
+            const p = b.dataset.p;
+            patch(i.id, {
+              seen_by: i.seen_by.includes(p) ? i.seen_by.filter((x) => x !== p) : [...i.seen_by, p],
+            });
+            break;
+          }
+          case 'del':
+            if (confirm(`Remove "${i.title}"?`)) {
+              mutate({ t: 'del', id: i.id });
+            }
+        }
+      });
 
-/* ---------- search (TMDB) ---------- */
-let timer;
-$("q").addEventListener("input", (e) => {
-  clearTimeout(timer);
-  const v = e.target.value.trim();
-  if (v.length < 2) return $("results").classList.remove("open");
-  timer = setTimeout(() => search(v), 300);
-});
-document.addEventListener("click", (e) => { if (!e.target.closest(".search")) $("results").classList.remove("open"); });
-$("q").addEventListener("focus", () => $("results").innerHTML && $("q").value.length > 1 && $("results").classList.add("open"));
+      /* ---------- drag to rank ---------- */
+      new Sortable($('queue'), {
+        handle: '.grip',
+        animation: 180,
+        ghostClass: 'sortable-ghost',
+        chosenClass: 'sortable-chosen',
+        forceFallback: false,
+        onEnd(evt) {
+          if (evt.oldIndex === evt.newIndex) return;
+          const q = items.filter((i) => i.status === 'queue').sort(byPos);
+          const [moved] = q.splice(evt.oldIndex, 1);
+          const prev = q[evt.newIndex - 1],
+            next = q[evt.newIndex];
+          const pos =
+            prev && next
+              ? (prev.position + next.position) / 2
+              : prev
+                ? prev.position + 1
+                : next
+                  ? next.position - 1
+                  : 0;
+          patch(moved.id, { position: pos });
+        },
+      });
 
-let found = [];
-async function search(v) {
-  const r = $("results");
-  try {
-    const res = await fetch(`https://api.themoviedb.org/3/search/multi?api_key=${C.TMDB_API_KEY}&query=${encodeURIComponent(v)}&include_adult=false`);
-    if (!res.ok) throw new Error("TMDB error " + res.status + " (check your API key)");
-    const json = await res.json();
-    found = json.results.filter((x) => x.media_type === "movie" || x.media_type === "tv").slice(0, 8);
-    r.innerHTML = found.map((x, k) => {
-      const exists = items.some((i) => i.tmdb_id === x.id && i.media_type === x.media_type);
-      const year = (x.release_date || x.first_air_date || "").slice(0, 4);
-      return `<button class="res" data-k="${k}">
+      /* ---------- search (TMDB) ---------- */
+      let timer;
+      $('q').addEventListener('input', (e) => {
+        clearTimeout(timer);
+        const v = e.target.value.trim();
+        if (v.length < 2) return $('results').classList.remove('open');
+        timer = setTimeout(() => search(v), 300);
+      });
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('.search')) $('results').classList.remove('open');
+      });
+      $('q').addEventListener(
+        'focus',
+        () =>
+          $('results').innerHTML && $('q').value.length > 1 && $('results').classList.add('open')
+      );
+
+      let found = [];
+      async function search(v) {
+        const r = $('results');
+        try {
+          const res = await fetch(
+            `https://api.themoviedb.org/3/search/multi?api_key=${C.TMDB_API_KEY}&query=${encodeURIComponent(v)}&include_adult=false`
+          );
+          if (!res.ok) throw new Error('TMDB error ' + res.status + ' (check your API key)');
+          const json = await res.json();
+          found = json.results
+            .filter((x) => x.media_type === 'movie' || x.media_type === 'tv')
+            .slice(0, 8);
+          r.innerHTML =
+            found
+              .map((x, k) => {
+                const exists = items.some(
+                  (i) => i.tmdb_id === x.id && i.media_type === x.media_type
+                );
+                const year = (x.release_date || x.first_air_date || '').slice(0, 4);
+                return `<button class="res" data-k="${k}">
         ${x.poster_path ? `<img src="https://image.tmdb.org/t/p/w92${x.poster_path}" alt="">` : `<div class="ph"></div>`}
         <div><div class="t">${esc(x.title || x.name)}</div>
-        <div class="m">${x.media_type === "tv" ? "Series" : "Movie"} · ${year || "—"} ${exists ? '<span class="added">· already on your list</span>' : ""}</div>
+        <div class="m">${x.media_type === 'tv' ? 'Series' : 'Movie'} · ${year || '—'} ${exists ? '<span class="added">· already on your list</span>' : ''}</div>
         <div class="o">${esc(x.overview)}</div></div></button>`;
-    }).join("") || `<div class="empty-res">No results.</div>`;
-  } catch (err) { r.innerHTML = `<div class="empty-res">${esc(err.message)}</div>`; }
-  r.classList.add("open");
-}
-$("results").addEventListener("click", (e) => {
-  const b = e.target.closest(".res"); if (!b) return;
-  const x = found[b.dataset.k];
-  if (items.some((i) => i.tmdb_id === x.id && i.media_type === x.media_type)) return toast("Already on your list");
-  const q = items.filter((i) => i.status === "queue");
-  const item = {
-    id: crypto.randomUUID(), tmdb_id: x.id, media_type: x.media_type, title: x.title || x.name,
-    year: (x.release_date || x.first_air_date || "").slice(0, 4), poster: x.poster_path, overview: x.overview,
-    status: "queue", position: Math.max(0, ...q.map((i) => i.position)) + 1, seen_by: [],
-  };
-  mutate({ t: "add", item });
-  $("results").classList.remove("open"); $("q").value = "";
-  toast(`Added "${item.title}"`);
-});
+              })
+              .join('') || `<div class="empty-res">No results.</div>`;
+        } catch (err) {
+          r.innerHTML = `<div class="empty-res">${esc(err.message)}</div>`;
+        }
+        r.classList.add('open');
+      }
+      $('results').addEventListener('click', (e) => {
+        const b = e.target.closest('.res');
+        if (!b) return;
+        const x = found[b.dataset.k];
+        if (items.some((i) => i.tmdb_id === x.id && i.media_type === x.media_type))
+          return toast('Already on your list');
+        const q = items.filter((i) => i.status === 'queue');
+        const item = {
+          id: crypto.randomUUID(),
+          tmdb_id: x.id,
+          media_type: x.media_type,
+          title: x.title || x.name,
+          year: (x.release_date || x.first_air_date || '').slice(0, 4),
+          poster: x.poster_path,
+          overview: x.overview,
+          status: 'queue',
+          position: Math.max(0, ...q.map((i) => i.position)) + 1,
+          seen_by: [],
+        };
+        mutate({ t: 'add', item });
+        $('results').classList.remove('open');
+        $('q').value = '';
+        toast(`Added "${item.title}"`);
+      });
 
-start();
-</script>
-</body>
+      start();
+    </script>
+  </body>
 </html>
