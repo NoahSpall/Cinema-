@@ -5,6 +5,9 @@ window.CONFIG = {
   // themoviedb.org -> Settings -> API -> "API Key" (v3 auth), free
   TMDB_API_KEY: '4ce356e1f9a195b55f1383ccf8ac6f8d',
 
+  // Optional: GitHub token (github_pat_...). If set, nobody has to paste it per device.
+  GITHUB_TOKEN: '',
+
   // Names shown on the "already seen by" chips
   PEOPLE: ['He', 'She'],
 };

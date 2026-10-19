@@ -491,6 +491,7 @@
       const FILE = C.DATA_FILE || 'data.json';
       const API = `https://api.github.com/repos/${C.DATA_REPO}/contents/${FILE}`;
       const getToken = () => {
+        if (C.GITHUB_TOKEN) return C.GITHUB_TOKEN;
         try {
           return localStorage.getItem('gh_token');
         } catch {
