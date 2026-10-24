@@ -119,5 +119,17 @@
   "seen_by": [
    "She"
   ]
+ },
+ {
+  "id": "1ad3e383-95d4-4981-8933-756807b7ab95",
+  "tmdb_id": 316029,
+  "media_type": "movie",
+  "title": "The Greatest Showman",
+  "year": "2017",
+  "poster": "/b9CeobiihCx1uG1tpw8hXmpi7nm.jpg",
+  "overview": "The story of American showman P.T. Barnum, founder of the circus that became the famous traveling Ringling Bros. and Barnum & Bailey Circus.",
+  "status": "queue",
+  "position": 8,
+  "seen_by": []
  }
 ]
