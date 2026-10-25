@@ -131,5 +131,17 @@
   "status": "queue",
   "position": 8,
   "seen_by": []
+ },
+ {
+  "id": "6db69af1-b5ad-4a9f-ad0d-4ecaee3217bc",
+  "tmdb_id": 569094,
+  "media_type": "movie",
+  "title": "Spider-Man: Across the Spider-Verse",
+  "year": "2023",
+  "poster": "/8Vt6mWEReuy4Of61Lnj5Xj704m8.jpg",
+  "overview": "After reuniting with Gwen Stacy, Brooklyn’s full-time, friendly neighborhood Spider-Man is catapulted across the Multiverse, where he encounters the Spider Society, a team of Spider-People charged with protecting the Multiverse's very existence. But when the heroes clash on how to handle a new threat, Miles finds himself pitted against the other Spiders and must set out on his own to save those he loves most.",
+  "status": "queue",
+  "position": 9,
+  "seen_by": []
  }
 ]
