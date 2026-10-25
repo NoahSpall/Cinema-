@@ -130,7 +130,9 @@
   "overview": "The story of American showman P.T. Barnum, founder of the circus that became the famous traveling Ringling Bros. and Barnum & Bailey Circus.",
   "status": "queue",
   "position": 8,
-  "seen_by": []
+  "seen_by": [
+   "She"
+  ]
  },
  {
   "id": "6db69af1-b5ad-4a9f-ad0d-4ecaee3217bc",
