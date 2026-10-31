@@ -187,5 +187,17 @@
   "status": "queue",
   "position": 12,
   "seen_by": []
+ },
+ {
+  "id": "42da0c1b-9e91-44d9-aa4d-dbcfdd3c6aba",
+  "tmdb_id": 1384216,
+  "media_type": "movie",
+  "title": "The Dog Stars",
+  "year": "2026",
+  "poster": "/5O616X9vmRzQdB68PHzBewPittd.jpg",
+  "overview": "After the world's population has been ravaged by a pandemic, a man lives a lonesome existence in a Colorado airplane hangar with his dog and a dour gunman he has befriended. When a mysterious transmission comes through on the radio while he’s flying his old Cessna, it sparks a hunt for the provenance of the sound.",
+  "status": "queue",
+  "position": 13,
+  "seen_by": []
  }
 ]
